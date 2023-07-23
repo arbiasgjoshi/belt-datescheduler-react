@@ -1,0 +1,45 @@
+.date-picker {
+  display: inline-block;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+
+  &-labels {
+    display: flex;
+    flex-direction: row;
+    // justify-content: space-around;
+    margin-bottom: 10px;
+
+    > div {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+
+  &-dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+  }
+
+  &-date {
+    border: 3px solid #ccc;
+    border-radius: 100%;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.active {
+      color: red;
+    }
+
+    &.empty {
+      // opacity: 0.5;
+      border: 0;
+    }
+  }
+}
