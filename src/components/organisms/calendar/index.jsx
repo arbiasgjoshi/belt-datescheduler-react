@@ -1,13 +1,22 @@
-import { useState, useEffect } from "react";
 import DatePicker from "@components/molecules/datepicker";
+import "./index.scss";
 
-const Calendar = () => {
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-
-  console.log(currentYear);
+const Calendar = ({ dates = [] }) => {
   return (
     <div className="calendar-wrapper">
-      <DatePicker currentYear={currentYear} />
+      {dates.length > 0 &&
+        dates.map((date, index) => {
+          return (
+            <>
+              <DatePicker
+                key={index}
+                dates={date.dates}
+                month={date.month}
+                currentYear={date.year}
+              />
+            </>
+          );
+        })}
     </div>
   );
 };

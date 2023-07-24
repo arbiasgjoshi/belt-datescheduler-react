@@ -1,8 +1,17 @@
 .date-picker {
-  display: inline-block;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 10px;
+  display: flex;
+  margin-bottom: 20px;
+  flex-direction: column;
+  justify-content: center;
+  width: 340px;
+
+  &:first-child {
+    margin-top: 30px;
+  }
+
+  &:last-child {
+    margin-bottom: 30px;
+  }
 
   &--month-details {
     h4 {
@@ -33,15 +42,15 @@
   }
 
   &-date {
-    border: 3px solid #ccc;
     border-radius: 100%;
-    width: 2rem;
-    height: 2rem;
+    width: 40px;
+    height: 40px;
     padding: 0;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: ease all 0.3s;
 
     &.active {
       color: red;
@@ -50,6 +59,11 @@
     &.empty {
       // opacity: 0.5;
       border: 0;
+    }
+
+    &:not(.empty):hover {
+      cursor: pointer;
+      background-color: #cecece;
     }
   }
 }
