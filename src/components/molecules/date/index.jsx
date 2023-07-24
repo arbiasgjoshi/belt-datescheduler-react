@@ -1,7 +1,13 @@
 import PropTypes from "prop-types";
-
+import ProgressBar from "@components/atoms/progress-bar";
 const CalendarDate = ({ className, value }) => {
-  return <div className={className}>{value}</div>;
+  const progressValue = Math.floor(Math.random() * 100) + 1;
+
+  return (
+    <div className={className}>
+      {value ? <ProgressBar progress={progressValue}>{value}</ProgressBar> : ""}
+    </div>
+  );
 };
 
 CalendarDate.propTypes = {

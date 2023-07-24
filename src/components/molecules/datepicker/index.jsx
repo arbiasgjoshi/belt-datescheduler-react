@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
 import { useRef } from "react";
 import CalendarDate from "@components/molecules/date";
 
 import "./index.scss";
 
-const DatePicker = ({ dates = [], month, currentYear }) => {
+const DatePicker = ({ dates = [], month, currentYear, key }) => {
+  console.log(month);
   const ref = useRef(null);
 
   return (

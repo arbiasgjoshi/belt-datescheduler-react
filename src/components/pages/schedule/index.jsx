@@ -4,7 +4,7 @@ import { useMachine } from "@xstate/react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-
+import tasksData from "@/data/tasks.json";
 // import ToggleButton from "@mui/material/Button";
 
 import TodayIcon from "@mui/icons-material/Today";
@@ -14,6 +14,7 @@ import {
   allocatedTimeButtons,
   allocatedWeekButtons,
 } from "@/helpers";
+
 import Calendar from "@components/organisms/calendar";
 
 import "./index.scss";
@@ -28,6 +29,7 @@ const PersonalSchedule = () => {
     send("SCHEDULE");
 
     let printedDates = addInitialDates();
+
     send({
       type: "ADD_INITIAL_DATES",
       payload: printedDates,
@@ -68,7 +70,6 @@ const PersonalSchedule = () => {
         margin: "0 auto",
       }}>
       <div className="row-item">
-        {console.log(state)}
         <Stack spacing={2} direction="row" sx={{ marginBottom: "15px" }}>
           <h3>Duration</h3>
 
@@ -106,6 +107,7 @@ const PersonalSchedule = () => {
           </Button>
         </Stack>
       </div>
+      {/* <Percentage>25</Percentage> */}
       {dates.length > 0 && calendar ? <Calendar dates={dates} /> : ""}
     </Box>
   );

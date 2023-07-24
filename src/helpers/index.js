@@ -42,13 +42,14 @@ export const addInitialDates = () => {
       const thisDate = new Date(currentYear, month - 1, day);
       const isActive = isSameDay(thisDate, currentDate);
       const className = `date-picker-date${isActive ? " active" : ""}`;
-
       const dateObj = {
         year: currentYear,
         month,
         className,
         key: `date-${day}`,
         value: day,
+        allocatedTasks: [],
+        formatedDate: format(thisDate, "yyyy-MM-dd"),
       };
       dates.push(dateObj);
     }
