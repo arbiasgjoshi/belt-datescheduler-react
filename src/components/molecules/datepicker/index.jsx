@@ -1,16 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { endOfMonth, subDays, format, isSameDay, getYear } from "date-fns";
 import {
   getFirstDayOfWeek,
   getDaysInMonth,
   getLastDayOfWeek,
-} from "../../../helpers/index";
+} from "@/helpers/index";
 
-import CalendarDate from "../date";
+import CalendarDate from "@components/molecules/date";
 
 import "./index.scss";
 
 const DatePicker = () => {
+  const ref = useRef(null);
   // These two entries will be used for the purpose of variability between different months
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -24,6 +25,9 @@ const DatePicker = () => {
     const today = new Date();
     const daysInMonth = getDaysInMonth(selectedYear, selectedMonth);
     const firstDayOfWeek = getFirstDayOfWeek(selectedYear, selectedMonth);
+
+    console.log(firstDayOfWeek);
+
     const lastDayOfWeek = getLastDayOfWeek(
       selectedYear,
       selectedMonth,
@@ -43,7 +47,7 @@ const DatePicker = () => {
         className: "date-picker-date empty",
         key: `date-empty-${i}`,
         // value: emptyDate.getDate(),
-        value: "",
+        value: null,
       };
       newDates.push(dateObj);
     }
@@ -72,14 +76,14 @@ const DatePicker = () => {
       const dateObj = {
         className: "date-picker-date empty",
         key: `date-empty-${nextMonth}-${nextMonthDate}`,
-        value: "",
+        value: null,
       };
       newDates.push(dateObj);
     }
 
     setDates(newDates);
 
-    console.log(newDates);
+    // console.log(newDates);
   }, [selectedMonth, selectedYear]);
 
   // const handleYearChange = (event) => {
@@ -97,19 +101,21 @@ const DatePicker = () => {
   return (
     <>
       <div className="date-picker">
-        <div className="date-picker--details">
-          {currentMonthLabel} {currentYear}
+        <div className="date-picker--month-details">
+          <h4>
+            {currentMonthLabel} {currentYear}
+          </h4>
         </div>
-        <div className="date-picker-labels">
-          <div>Sun</div>
-          <div>Mon</div>
-          <div>Tue</div>
-          <div>Wed</div>
-          <div>Thu</div>
-          <div>Fri</div>
-          <div>Sat</div>
+        <div className="date-picker--day-labels">
+          <h4>M</h4>
+          <h4>T</h4>
+          <h4>W</h4>
+          <h4>T</h4>
+          <h4>F</h4>
+          <h4>S</h4>
+          <h4>S</h4>
         </div>
-        <div className="date-picker-dates">
+        <div className="date-picker--dates">
           {dates &&
             dates.map(({ className, key, value }) => (
               <CalendarDate key={key} className={className} value={value} />

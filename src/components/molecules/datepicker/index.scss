@@ -4,19 +4,29 @@
   border-radius: 4px;
   padding: 10px;
 
-  &-labels {
-    display: flex;
-    flex-direction: row;
-    // justify-content: space-around;
-    margin-bottom: 10px;
-
-    > div {
-      flex: 1;
-      justify-content: center;
+  &--month-details {
+    h4 {
+      text-align: left;
+      margin: 0 0.5rem 1rem;
     }
   }
 
-  &-dates {
+  &--day-labels {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+
+    > h4 {
+      // flex: 1;
+      // justify-content: center;
+      text-align: center;
+      font-weight: 500;
+      margin: 0;
+    }
+  }
+
+  &--dates {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 10px;
