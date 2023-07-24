@@ -37,16 +37,21 @@ const DatePicker = ({ dates = [], month, currentYear, onValueSelected }) => {
           <h4>S</h4>
         </div>
         <div className="date-picker--dates">
+          {console.log(dates)}
           {dates &&
-            dates.map(({ className, key, value, allocatedTasks }) => (
-              <CalendarDate
-                key={key}
-                className={className}
-                value={value}
-                allocatedTasks={allocatedTasks}
-                onValueSelected={(val) => onValueSelected(val)}
-              />
-            ))}
+            dates.map(
+              ({ className, key, value, allocatedTasks, formatedDate }) => (
+                <>
+                  <CalendarDate
+                    key={key}
+                    className={className}
+                    value={value}
+                    allocatedTasks={allocatedTasks}
+                    onValueSelected={() => onValueSelected(formatedDate)}
+                  />
+                </>
+              )
+            )}
         </div>
       </div>
     </>

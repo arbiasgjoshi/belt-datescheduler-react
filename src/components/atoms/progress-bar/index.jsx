@@ -2,7 +2,6 @@
 // import { useState } from "react";
 
 const ProgressBar = ({ width = null, height = null, progress, children }) => {
-  console.log(progress);
   const renderColor = (val) => {
     if (val < 50) {
       return "#74F399";

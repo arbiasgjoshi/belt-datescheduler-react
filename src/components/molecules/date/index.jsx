@@ -29,7 +29,7 @@ const CalendarDate = ({
   }, []);
 
   return (
-    <div className={className} onClick={() => onValueSelected(value)}>
+    <div className={className} onClick={() => onValueSelected()}>
       {value ? <ProgressBar progress={percentage}>{value}</ProgressBar> : ""}
     </div>
   );

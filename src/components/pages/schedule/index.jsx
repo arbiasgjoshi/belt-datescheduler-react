@@ -108,7 +108,6 @@ const PersonalSchedule = () => {
   };
 
   const onWeekOrDayAllocated = (weekOrDay) => {
-    console.log(weekOrDay);
     send({
       type: "SET_WEEK_DAY_ALLOCATION",
       payload: weekOrDay,
@@ -123,7 +122,7 @@ const PersonalSchedule = () => {
     };
   };
 
-  const handleClose = (event, reason) => {
+  const handleClose = (_, reason) => {
     if (reason === "clickaway") {
       return;
     }
@@ -134,6 +133,22 @@ const PersonalSchedule = () => {
     }
 
     setOpen(false);
+  };
+
+  const formatAllocation = (value) => {
+    if (value === "weekAfter") {
+      return "week after";
+    }
+
+    if (value === "nextWeek") {
+      return "next week";
+    }
+
+    if (value === "currentWeek") {
+      return "this week";
+    }
+
+    return value;
   };
 
   return (
@@ -189,7 +204,10 @@ const PersonalSchedule = () => {
         {dates.length > 0 && calendar ? (
           <Calendar
             dates={dates}
-            onSelectedDate={(date) => onWeekOrDayAllocated(date)}
+            onSelectedDate={(date) => {
+              onWeekOrDayAllocated(date);
+              setCalendar(false);
+            }}
           />
         ) : (
           ""
@@ -201,7 +219,8 @@ const PersonalSchedule = () => {
         autoHideDuration={2000}
         onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          Your task has been saved.
+          Your task of {timeAllocated} has been saved successfully for{" "}
+          {formatAllocation(weekOrDayAllocated)}.
         </Alert>
       </Snackbar>
       {loading ? (
