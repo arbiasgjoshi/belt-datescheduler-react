@@ -21,9 +21,9 @@ const App = () => {
   return (
     <Router>
       <Route exact path="/login" component={Login} />
-      <PrivateRoute exact path="/" component={HomePage} />
-      <PrivateRoute exact path="/schedule" component={SchedulePage} />
-      <PrivateRoute exact path="/about" component={AboutPage} />
+      {/* <PrivateRoute exact path="/" component={HomePage} /> */}
+      {/* <PrivateRoute exact path="/about" component={AboutPage} /> */}
+      <PrivateRoute exact path="/" component={SchedulePage} />
     </Router>
   );
 };
