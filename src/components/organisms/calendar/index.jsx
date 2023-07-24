@@ -1,7 +1,7 @@
 import DatePicker from "@components/molecules/datepicker";
 import "./index.scss";
 
-const Calendar = ({ dates = [] }) => {
+const Calendar = ({ dates = [], onSelectedDate }) => {
   return (
     <div className="calendar-wrapper">
       {dates.length > 0 &&
@@ -13,6 +13,7 @@ const Calendar = ({ dates = [] }) => {
                 dates={date.dates}
                 month={date.month}
                 currentYear={date.year}
+                onValueSelected={(val) => onSelectedDate(val)}
               />
             </>
           );

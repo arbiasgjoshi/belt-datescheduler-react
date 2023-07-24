@@ -1,16 +1,27 @@
 /* eslint-disable react/prop-types */
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { format } from "date-fns";
 import CalendarDate from "@components/molecules/date";
 
 import "./index.scss";
 
-const DatePicker = ({ dates = [], month, currentYear, key }) => {
-  console.log(month);
-  const ref = useRef(null);
+const DatePicker = ({ dates = [], month, currentYear, onValueSelected }) => {
+  const ref = useRef();
+  const currentMonth = format(new Date(), "MMMM");
+
+  const scrollToElement = () => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    if (month === currentMonth) {
+      scrollToElement();
+    }
+  }, []);
 
   return (
     <>
-      <div className="date-picker">
+      <div className="date-picker" ref={ref}>
         <div className="date-picker--month-details">
           <h4>
             {month} {currentYear}
@@ -27,8 +38,14 @@ const DatePicker = ({ dates = [], month, currentYear, key }) => {
         </div>
         <div className="date-picker--dates">
           {dates &&
-            dates.map(({ className, key, value }) => (
-              <CalendarDate key={key} className={className} value={value} />
+            dates.map(({ className, key, value, allocatedTasks }) => (
+              <CalendarDate
+                key={key}
+                className={className}
+                value={value}
+                allocatedTasks={allocatedTasks}
+                onValueSelected={(val) => onValueSelected(val)}
+              />
             ))}
         </div>
       </div>

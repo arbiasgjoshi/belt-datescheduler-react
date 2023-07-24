@@ -49,7 +49,7 @@ export const addInitialDates = () => {
         key: `date-${day}`,
         value: day,
         allocatedTasks: [],
-        formatedDate: format(thisDate, "yyyy-MM-dd"),
+        formatedDate: format(thisDate, "dd/MM/yyyy"),
       };
       dates.push(dateObj);
     }
