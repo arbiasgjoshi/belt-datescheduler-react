@@ -37,7 +37,6 @@ const DatePicker = ({ dates = [], month, currentYear, onValueSelected }) => {
           <h4>S</h4>
         </div>
         <div className="date-picker--dates">
-          {console.log(dates)}
           {dates &&
             dates.map(
               ({ className, key, value, allocatedTasks, formatedDate }) => (

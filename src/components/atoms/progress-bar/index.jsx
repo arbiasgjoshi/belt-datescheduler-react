@@ -1,7 +1,13 @@
 /* eslint-disable react/prop-types */
 // import { useState } from "react";
 
-const ProgressBar = ({ width = null, height = null, progress, children }) => {
+const ProgressBar = ({
+  width = 40,
+  height = 40,
+  marginLeft = 0,
+  progress,
+  children,
+}) => {
   const renderColor = (val) => {
     if (val < 50) {
       return "#74F399";
@@ -13,11 +19,12 @@ const ProgressBar = ({ width = null, height = null, progress, children }) => {
   };
 
   const styles = {
-    width: `40px`,
-    height: `40px`,
+    width: `${width}px`,
+    height: `${height}px`,
     display: `flex`,
     alignItems: `center`,
     justifyContent: `center`,
+    marginLeft: `${marginLeft}px`,
     background: `conic-gradient(${renderColor(
       progress
     )} ${progress}%, 0, #ecf0f1 ${(100 - parseInt(progress)).toString()}%)`,

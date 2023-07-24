@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
+import ProgressBar from "@components/atoms/progress-bar";
 
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
@@ -20,6 +21,7 @@ import {
   addInitialDates,
   allocatedTimeButtons,
   allocatedWeekButtons,
+  getWeeklyProgressionTracker,
 } from "@/helpers";
 
 import Calendar from "@components/organisms/calendar";
@@ -41,6 +43,9 @@ const useStyles = makeStyles({
     "&:focus": {
       outline: "none !Important",
     },
+    ".progress-bar": {
+      marginLeft: "10px",
+    },
   },
 });
 
@@ -49,33 +54,43 @@ const PersonalSchedule = () => {
   const [calendar, setCalendar] = useState(false);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [progression, setProgression] = useState({
+    thisWeekProgression: 0,
+    nextWeekProgression: 0,
+    weekAfterProgression: 0,
+  });
   const classes = useStyles();
 
   const { dates, timeAllocated, weekOrDayAllocated } = state.context;
 
-  const calculateProgress = () => {
-    // const progressDates = tasksData.group(({ allocatedDate }) => allocatedDate);
-    // console.log(tasksData);
-  };
-
   useEffect(() => {
     send("SCHEDULE");
-    calculateProgress();
+    // calculateProgress();
     let printedDates = addInitialDates();
 
     for (let i = 0; i < tasksData.length; i++) {
       const task = tasksData[i];
       const allocatedDate = parse(task.allocatedDate, "dd/MM/yyyy", new Date());
+
       const month = getMonth(allocatedDate);
       const date = getDate(allocatedDate);
 
+      const dates = printedDates[month].dates;
+
+      const nullIndex = dates.findIndex(
+        (date) => !date.key.includes("date-empty")
+      );
+
+      const addedIndex = nullIndex + date - 1;
+
       if (
         printedDates[month] &&
-        printedDates[month].dates[date] &&
-        printedDates[month].dates[date].formatedDate === task.allocatedDate
+        printedDates[month].dates[addedIndex] &&
+        printedDates[month].dates[addedIndex].formatedDate ===
+          task.allocatedDate
       ) {
         // Add the task to the allocatedTasks array of the matching date
-        printedDates[month].dates[date].allocatedTasks.push({
+        printedDates[month].dates[addedIndex].allocatedTasks.push({
           name: task.taskName,
           duration: task.taskDuration,
         });
@@ -86,6 +101,9 @@ const PersonalSchedule = () => {
       type: "ADD_INITIAL_DATES",
       payload: printedDates,
     });
+
+    const progression = getWeeklyProgressionTracker(printedDates);
+    setProgression(progression);
   }, []);
 
   useEffect(() => {
@@ -151,6 +169,38 @@ const PersonalSchedule = () => {
     return value;
   };
 
+  const renderWeekProgress = (value) => {
+    if (value === "weekAfter") {
+      return (
+        <ProgressBar
+          progress={progression.weekAfterProgression}
+          width="30"
+          height="30"
+          marginLeft="5"
+        />
+      );
+    }
+    if (value === "nextWeek") {
+      return (
+        <ProgressBar
+          progress={progression.nextWeekProgression}
+          width="30"
+          height="30"
+          marginLeft="5"
+        />
+      );
+    }
+
+    return (
+      <ProgressBar
+        progress={progression.thisWeekProgression}
+        width="30"
+        height="30"
+        marginLeft="5"
+      />
+    );
+  };
+
   return (
     <>
       <Box
@@ -194,6 +244,7 @@ const PersonalSchedule = () => {
                 }}
                 key={button.value}>
                 {button.label}
+                {renderWeekProgress(button.value)}
               </Button>
             ))}
             <Button variant="outlined" onClick={() => toggleCalendar()}>

@@ -1,4 +1,14 @@
-import { isSameDay, format } from "date-fns";
+import {
+  isSameDay,
+  format,
+  startOfWeek,
+  endOfWeek,
+  addWeeks,
+  addMinutes,
+  isWithinInterval,
+  differenceInMinutes,
+  parse,
+} from "date-fns";
 
 export const getFirstDayOfWeek = (year, month) => {
   return new Date(year, month - 1, 0).getDay();
@@ -87,17 +97,104 @@ export const addInitialDates = () => {
   return months;
 };
 
+export const getWeeklyProgressionTracker = (initialDates) => {
+  // Define the start and end dates for this week, next week, and the week after
+  const currentDate = new Date();
+  const thisWeekStartDate = startOfWeek(currentDate);
+  const thisWeekEndDate = endOfWeek(currentDate);
+  const nextWeekStartDate = addWeeks(thisWeekStartDate, 1);
+  const nextWeekEndDate = addWeeks(thisWeekEndDate, 1);
+  const weekAfterStartDate = addWeeks(thisWeekStartDate, 2);
+  const weekAfterEndDate = addWeeks(thisWeekEndDate, 2);
+  const currentMonth = currentDate.getMonth();
+  console.log(currentMonth);
+
+  // Filter the initialDates based on the dates falling within each week
+  const thisWeekDates = filterDates(
+    initialDates,
+    thisWeekStartDate,
+    thisWeekEndDate
+  );
+  const nextWeekDates = filterDates(
+    initialDates,
+    nextWeekStartDate,
+    nextWeekEndDate
+  );
+  const weekAfterDates = filterDates(
+    initialDates,
+    weekAfterStartDate,
+    weekAfterEndDate
+  );
+
+  // Calculate the number of allocated tasks for each week
+  const thisWeekProgression = countAllocatedTasks(thisWeekDates);
+  const nextWeekProgression = countAllocatedTasks(nextWeekDates);
+  const weekAfterProgression = countAllocatedTasks(weekAfterDates);
+
+  function filterDates(dates, startDate, endDate) {
+    const filteredDates = [];
+
+    const startMonthIndex = startDate.getMonth();
+    const endMonthIndex = endDate.getMonth();
+
+    for (let i = startMonthIndex; i <= endMonthIndex; i++) {
+      const month = dates[i];
+      if (!month) continue;
+
+      for (const date of month.dates) {
+        if (!date.formatedDate) continue;
+        const currentDate = parse(date.formatedDate, "dd/MM/yyyy", new Date());
+        if (currentDate >= startDate && currentDate <= endDate) {
+          filteredDates.push(date);
+        }
+      }
+    }
+
+    return filteredDates;
+  }
+
+  // Helper function to count the number of allocated tasks for the given dates
+  function countAllocatedTasks(dates) {
+    let totalDuration = null;
+    for (const date of dates) {
+      if (date.allocatedTasks && date.allocatedTasks.length > 0) {
+        for (const task of date.allocatedTasks) {
+          if (task.duration === "none") {
+            // return totalDuration;
+            totalDuration += 0;
+          } else {
+            const [hours, minutes] = task.duration.split(":");
+            const durationInMinutes = parseInt(hours) * 60 + parseInt(minutes);
+
+            totalDuration += durationInMinutes;
+          }
+        }
+      }
+    }
+
+    // Calculate the percentage of allocated task duration compared to a 40-hour workweek
+    const percentage = (totalDuration / (40 * 100)) * 100;
+    return percentage;
+  }
+
+  return {
+    thisWeekProgression,
+    nextWeekProgression,
+    weekAfterProgression,
+  };
+};
+
 export const allocatedTimeButtons = [
   {
     value: "00:00",
     label: "None",
   },
   {
-    value: "15:00",
+    value: "00:15",
     label: "15 min",
   },
   {
-    value: "30:00",
+    value: "00:30",
     label: "30 min",
   },
   {
